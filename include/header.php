@@ -18,7 +18,7 @@
     </header>
 
     <nav class="navbar navbar-expand-sm bg-dark navbar-dark">
-        <div class="container-fluid">
+        <div class="container">
             <ul class="navbar-nav">
                 <li class="nav-item">
                     <a class="nav-link active" href="#">Domů</a>
@@ -29,6 +29,8 @@
                 <li class="nav-item">
                     <a class="nav-link" href="#">Oblíbené příspěvky</a>
                 </li>
+            </ul>
+            <ul class="navbar-nav justify-content-right">
                 <li class="nav-item">
                     <a class="nav-link" href="#">Přihlásit se</a>
                 </li>
@@ -36,4 +38,4 @@
         </div>
     </nav>
 
-    <main class="container mt-5">
+    <main class="container mt-4">
