@@ -21,12 +21,16 @@
                 <li class="nav-item">
                     <a class="nav-link active" href="index.php">Domů</a>
                 </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="#">Moje příspěvky</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="#">Oblíbené příspěvky</a>
-                </li>
+                <?php
+                if (!empty($_SESSION['email'])){
+                    echo '<li class="nav-item">
+                            <a class="nav-link" href="userComments.php">Moje příspěvky</a>
+                          </li>
+                          <li class="nav-item">
+                            <a class="nav-link" href="userLikes.php">Oblíbené příspěvky</a>
+                          </li>';
+                }
+                ?>
             </ul>
             <ul class="navbar-nav justify-content-right">
                 <?php
