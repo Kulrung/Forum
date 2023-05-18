@@ -4,7 +4,23 @@
 
     include 'include/header.php';
 
-    echo '<a href="category.php" class="btn btn-primary">Vytvořit novou kategorii</a>';
+    echo '<div class="row">
+            <div class="col-4">
+                <a href="category.php" class="btn btn-primary">Vytvořit novou kategorii</a>
+            </div>
+            <div class="col-4">
+                <!-- <p>Seřadit podle: </p> -->
+            </div>
+            <div class="col-4">
+                <p>Seřadit podle: </p> 
+                <select name="sort" class="form-select">
+                    <option selected="selected" value="change">Poslední změny</option>
+                    <option value="comments">Počtu příspěvků</option>
+                </select>
+            </div>
+          </div>';
+
+
 
     $categories = $db->query('SELECT DISTINCT categories.name AS category_name, categories.description AS description, categories.categories_id AS categories_id, comments.updated AS updated, COUNT(comments.comments_id) AS comments
                                     FROM categories JOIN topics USING (categories_id) JOIN comments USING (topics_id) GROUP BY categories.name  
