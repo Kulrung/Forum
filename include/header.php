@@ -19,7 +19,7 @@
         <div class="container">
             <ul class="navbar-nav">
                 <li class="nav-item">
-                    <a class="nav-link active" href="#">Domů</a>
+                    <a class="nav-link active" href="index.php">Domů</a>
                 </li>
                 <li class="nav-item">
                     <a class="nav-link" href="#">Moje příspěvky</a>
