@@ -5,9 +5,7 @@
     <meta name="viewport"
           content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title><?php if (!empty($title)) {
-            echo $title;
-        } ?></title>
+    <title><?php echo (!empty($title)?$title.' - ':'')?>Fórum</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css" rel="stylesheet">
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"></script>
 </head>
@@ -31,9 +29,18 @@
                 </li>
             </ul>
             <ul class="navbar-nav justify-content-right">
-                <li class="nav-item">
-                    <a class="nav-link" href="#">Přihlásit se</a>
-                </li>
+                <?php
+                if (!empty($_SESSION['email'])){
+                    echo '<li class="nav-item">
+                            <a href="logout.php" class="nav-link">Odhlásit se</a>
+                          </li>';
+                }
+                else {
+                    echo '<li class="nav-item">
+                            <a href="login.php" class="nav-link">Přihlásit se</a>
+                          </li>';
+                }
+                ?>
             </ul>
         </div>
     </nav>
