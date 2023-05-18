@@ -12,12 +12,21 @@
     if (!empty($categories)){
         foreach ($categories as $category) {
             echo '<div class="container p-3 my-3 border border-3">
-                    <h2>
-                      <a href="topics.php?category='.$category['categories_id'].'">'.htmlspecialchars($category['category_name']).'</a>
-                    </h2>
-                    <p>'.htmlspecialchars($category['description']).'</p>
-                    <p>Počet komentářů: '.htmlspecialchars($category['comments']).'</p>
-                    <p class="text-muted">Poslední příspěvek: '.htmlspecialchars(date('d.m.Y H:i',strtotime($category['updated']))).'</p>
+                        <div class="row">
+                            <div class="col-8">
+                                <h2>
+                                  <a href="topics.php?category='.$category['categories_id'].'">'.htmlspecialchars($category['category_name']).'</a>
+                                </h2>
+                                <p>'.htmlspecialchars($category['description']).'</p>
+                                
+                            </div>
+                            <div class="col-4">
+                                <p>Počet komentářů: '.htmlspecialchars($category['comments']).'</p>
+                                <p class="text-muted">Poslední příspěvek: '.htmlspecialchars(date('d.m.Y H:i',strtotime($category['updated']))).'</p>
+                                <a href="category.php" class="btn btn-primary">Upravit</a>
+                                <a href="" class="btn btn-danger">Smazat</a>
+                            </div>
+                        </div>
                   </div>';
         }
     }
