@@ -1,12 +1,10 @@
 <?php
 
-    require_once __DIR__.'/include/db.php';
+    require_once 'include/user.php';
 
-    include __DIR__.'/include/header.php';
+    include 'include/header.php';
 
-    $title = 'Fórum';
-
-    echo '<a href="createCategory.php" class="btn btn-primary">Vytvořit novou kategorii</a>';
+    echo '<a href="category.php" class="btn btn-primary">Vytvořit novou kategorii</a>';
 
     $categories = $db->query('SELECT DISTINCT categories.name AS category_name, categories.description AS description, categories.categories_id AS categories_id, comments.updated AS updated, COUNT(comments.comments_id) AS comments
                                     FROM categories JOIN topics USING (categories_id) JOIN comments USING (topics_id) GROUP BY categories.name  
@@ -29,4 +27,4 @@
               </div>';
     }
 
-    include __DIR__.'/include/footer.php';
+    include 'include/footer.php';
