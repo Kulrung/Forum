@@ -38,6 +38,9 @@
                 else {
                     echo '<li class="nav-item">
                             <a href="login.php" class="nav-link">Přihlásit se</a>
+                          </li>
+                          <li class="nav-item">
+                            <a href="registration.php" class="nav-link">Registrovat se</a>
                           </li>';
                 }
                 ?>
