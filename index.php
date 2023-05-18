@@ -37,7 +37,7 @@
                                 
                             </div>
                             <div class="col-4">
-                                <p>Počet komentářů: '.htmlspecialchars($category['comments']).'</p>
+                                <p>Počet příspěvků: '.htmlspecialchars($category['comments']).'</p>
                                 <p class="text-muted">Poslední příspěvek: '.htmlspecialchars(date('d.m.Y H:i',strtotime($category['updated']))).'</p>
                                 <a href="category.php" class="btn btn-primary">Upravit</a>
                                 <a href="" class="btn btn-danger">Smazat</a>
