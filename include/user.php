@@ -14,6 +14,7 @@ if (!empty($_SESSION['users_id'])){
     if ($userQuery->rowCount() != 1){
         unset($_SESSION['users_id']);
         unset($_SESSION['email']);
+        unset($_SESSION['username']);
         header('Location: index.php');
         exit();
     }
