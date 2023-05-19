@@ -39,7 +39,7 @@
     }
 
     $categoriesQuery = $db->prepare('SELECT DISTINCT categories.name AS category_name, categories.description AS description, categories.categories_id AS categories_id, MAX(comments.updated) AS updated, COUNT(comments.comments_id) AS comments
-                                           FROM categories JOIN topics ON topics.categories_id=categories.categories_id JOIN comments ON comments.topics_id=topics.topics_id 
+                                           FROM categories LEFT JOIN topics ON topics.categories_id=categories.categories_id LEFT JOIN comments ON comments.topics_id=topics.topics_id 
                                            GROUP BY categories.name  
                                            ORDER BY '.$sort.' DESC;');
     $categoriesQuery->execute();
