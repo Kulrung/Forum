@@ -16,18 +16,31 @@
     </header>
 
     <nav class="navbar navbar-expand-sm bg-dark navbar-dark">
+
+        <?php $page= substr($_SERVER['SCRIPT_NAME'], strrpos($_SERVER['SCRIPT_NAME'],"/")+1) ?>
+
+
         <div class="container">
             <ul class="navbar-nav">
                 <li class="nav-item">
-                    <a class="nav-link active" href="index.php">Domů</a>
+                    <a class="nav-link <?= $page == 'index.php'? 'active': '' ?>" href="index.php">Domů</a>
                 </li>
                 <?php
+
                 if (!empty($_SESSION['email'])){
                     echo '<li class="nav-item">
-                            <a class="nav-link" href="userComments.php">Moje příspěvky</a>
+                            <a class="nav-link ';
+                    if ($page == 'userComments.php'){
+                        echo 'active';
+                    }
+                    echo '" href="userComments.php">Moje příspěvky</a>
                           </li>
                           <li class="nav-item">
-                            <a class="nav-link" href="userLikes.php">Oblíbené příspěvky</a>
+                            <a class="nav-link ';
+                    if ($page =='userLikes.php'){
+                        echo 'active';
+                    }
+                    echo '" href="userLikes.php">Oblíbené příspěvky</a>
                           </li>';
                 }
                 ?>
