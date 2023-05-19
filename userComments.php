@@ -5,8 +5,9 @@
     include 'include/header.php';
 
     $comments = $db->prepare('SELECT comments.comments_id, comments.text AS text, topics.name AS topic_name, categories.name AS category_name, users.username AS username, comments.created AS created, comments.updated AS updated
-                                  FROM users JOIN comments ON users.users_id=comments.creator_id JOIN topics ON topics.topics_id=comments.topics_id JOIN categories ON categories.categories_id=topics.categories_id
-                                  WHERE users_id=:users_id;');
+                                    FROM users JOIN comments ON users.users_id=comments.creator_id JOIN topics ON topics.topics_id=comments.topics_id JOIN categories ON categories.categories_id=topics.categories_id
+                                    WHERE users_id=:users_id
+                                    ORDER BY updated DESC;');
     $comments->execute([
         ':users_id'=>$_SESSION['users_id']
     ]);
