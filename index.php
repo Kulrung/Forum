@@ -4,27 +4,48 @@
 
     include 'include/header.php';
 
-    echo '<div class="row">
-            <div class="col-4">
-                <a href="category.php" class="btn btn-primary">Vytvořit novou kategorii</a>
-            </div>
-            <div class="col-4">
-                <!-- <p>Seřadit podle: </p> -->
-            </div>
-            <div class="col-4">
-                <p>Seřadit podle: </p> 
-                <select name="sort" class="form-select">
-                    <option selected="selected" value="change">Poslední změny</option>
-                    <option value="comments">Počtu příspěvků</option>
+    ?>
+
+
+      <div class="row">
+        <div class="col-4">
+            <a href="category.php" class="btn btn-primary">Vytvořit novou kategorii</a>
+        </div>
+        <div class="col-4">
+            <!-- <p>Seřadit podle: </p> -->
+        </div>
+        <div class="col-4">
+            <p>Seřadit podle: </p>
+            <form method="get" id="sortFilter">
+                <select name="sort" class="form-control" onchange="document.getElementById('sortFilter').submit();">
+                    <option value="sort_by_updated" <?php if (isset($_GET['sort']) && $_GET['sort'] == 'sort_by_updated'){ echo 'selected';} ?> >Poslední změny</option>
+                    <option value="sort_by_comments" <?php if (isset($_GET['sort']) && $_GET['sort'] == 'sort_by_comments'){ echo 'selected';} ?>>Počtu příspěvků</option>
                 </select>
-            </div>
-          </div>';
+            </form>
+        </div>
+      </div>
 
+<?php
 
+    $sort = 'updated';
 
-    $categories = $db->query('SELECT DISTINCT categories.name AS category_name, categories.description AS description, categories.categories_id AS categories_id, comments.updated AS updated, COUNT(comments.comments_id) AS comments
-                                    FROM categories JOIN topics USING (categories_id) JOIN comments USING (topics_id) GROUP BY categories.name  
-                                    ORDER BY `comments`.`updated` ASC;')->fetchAll(PDO::FETCH_ASSOC);
+    if (isset($_GET['sort'])){
+        if ($_GET['sort'] == 'sort_by_updated'){
+            $sort = 'updated';
+        }
+        elseif ($_GET['sort'] == 'sort_by_comments'){
+            $sort = 'comments';
+        }
+    }
+
+    $categoriesQuery = $db->prepare('SELECT DISTINCT categories.name AS category_name, categories.description AS description, categories.categories_id AS categories_id, MAX(comments.updated) AS updated, COUNT(comments.comments_id) AS comments
+                                           FROM categories JOIN topics ON topics.categories_id=categories.categories_id JOIN comments ON comments.topics_id=topics.topics_id 
+                                           GROUP BY categories.name  
+                                           ORDER BY '.$sort.' DESC;');
+    $categoriesQuery->execute();
+
+    $categories = $categoriesQuery->fetchAll(PDO::FETCH_ASSOC);
+
     if (!empty($categories)){
         foreach ($categories as $category) {
             echo '<div class="container p-3 my-3 border border-3">
