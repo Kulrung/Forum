@@ -2,6 +2,9 @@
 
     require_once 'include/user.php';
 
+    if (empty($_SESSION['users_id'])){
+        exit('Pro úpravu kategorií musíte být přihlášen(a).');
+    }
 
 
     $errors=[];
