@@ -9,7 +9,11 @@
 
       <div class="row">
         <div class="col-4">
-            <a href="category.php" class="btn btn-primary">Vytvořit novou kategorii</a>
+            <?php
+            if (!empty($_SESSION['users_id'])) {
+                echo '<a href="category.php" class="btn btn-primary">Vytvořit novou kategorii</a>';
+            }
+            ?>
         </div>
         <div class="col-4">
             <!-- <p>Seřadit podle: </p> -->
