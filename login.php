@@ -21,6 +21,7 @@
                 $_SESSION['users_id']=$user['users_id'];
                 $_SESSION['email']=$user['email'];
                 $_SESSION['username']=$user['username'];
+                $_SESSION['isAdmin']=$user['isAdmin'];
                 Header('Location: index.php');
                 exit();
             }
