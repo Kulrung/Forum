@@ -6,6 +6,24 @@
         exit('Pro úpravu kategorií musíte být přihlášen(a).');
     }
 
+    $categoriesId='';
+    $categoryName='';
+    $categoryDescription='';
+
+    if (!empty($_REQUEST['id'])){
+        $categoriesQuery=$db->prepare('SELECT * FROM categories WHERE categories_id=:id LIMIT 1');
+        $categoriesQuery->execute([
+                ':id'=>$_REQUEST['id']
+        ]);
+        if ($category = $categoriesQuery->fetch(PDO::FETCH_ASSOC)) {
+            $categoriesId=$category['categories_id'];
+            $categoryName = $category['name'];
+            $categoryDescription = $category['description'];
+        }
+        else{
+            exit('Kategorie neexistuje.');
+        }
+    }
 
     $errors=[];
     if (!empty($_POST)){
@@ -19,24 +37,24 @@
         if (empty($name)){
             $errors['name']='Musíte zadat název kategorie.';
         }
-        else{
-            $nameQuery=$db->prepare('SELECT * FROM categories WHERE name=:name LIMIT 1;');
-            $nameQuery->execute([
-                    ':name'=>$name
-            ]);
-            if ($nameQuery->rowCount()>0){
-                $errors['name']='Kategorie s tímto názvem již existuje.';
-            }
-        }
 
         if (empty($errors)){
-            $password=password_hash($_POST['password'],PASSWORD_DEFAULT);
 
-            $categoriesQuery=$db->prepare('INSERT INTO categories (name, description) VALUES (:name, :description);');
-            $categoriesQuery->execute([
-                ':name'=>$name,
-                ':description'=>$description
-            ]);
+            if ($categoriesId){
+                $query = $db->prepare('UPDATE categories SET name=:name, description=:description WHERE categories_id=:id');
+                $query->execute([
+                    ':name'=>$categoryName,
+                    ':description'=>$categoryDescription,
+                    ':id'=>$categoriesId
+                ]);
+            }
+            else{
+                $query=$db->prepare('INSERT INTO categories (name, description) VALUES (:name, :description);');
+                $query->execute([
+                    ':name'=>$name,
+                    ':description'=>$description
+                ]);
+            }
 
             header('Location: index.php');
             exit();
@@ -50,16 +68,35 @@
     <h2>Kategorie</h2>
 
     <form method="post">
+        <input type="hidden" name="id" value="<?php echo $categoriesId ?>">
         <div class="form-group">
             <label for="name">Název:</label>
-            <input type="text" name="name" id="name" required class="form-control">
+            <input type="text" name="name" id="name" required class="form-control <?php echo (!empty($errors['name'])?'is-invalid':'');?>" value="<?php echo htmlspecialchars($categoryName)?>">
+            <?php
+            if (!empty($errors['name'])){
+                echo '<div class="invalid-feedback">'.$errors['name'].'</div>';
+            }
+            ?>
         </div>
         <div class="form-group">
             <label for="description">Popis:</label>
-            <input type="text" name="description" id="description" required class="form-control">
+            <textarea type="text" name="description" id="description" required class="form-control"><?php echo htmlspecialchars($categoryDescription)?></textarea>
+            <?php
+            if (!empty($errors['description'])){
+                echo '<div class="invalid-feedback">'.$errors['description'].'</div>';
+            }
+            ?>
         </div>
         <div class="mt-2">
-            <button type="submit" class="btn btn-primary">Přidat</button>
+            <button type="submit" class="btn btn-primary">
+                <?php
+                if ($categoriesId){
+                    echo 'Upravit';
+                }
+                else{
+                    echo 'Přidat';
+                }
+                ?></button>
             <a href="index.php" class="btn btn-light">Zrušit</a>
         </div>
 
