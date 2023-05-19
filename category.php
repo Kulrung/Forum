@@ -61,6 +61,13 @@
         }
     }
 
+    if ($categoriesId){
+        $title = 'Úprava kategorie';
+    }
+    else{
+        $title='Nová kategorie';
+    }
+
     include 'include/header.php';
 
 ?>
