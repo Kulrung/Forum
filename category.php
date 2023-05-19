@@ -1,8 +1,8 @@
 <?php
 
-    include 'include/user.php';
+    require_once 'include/user.php';
 
-    include 'include/header.php';
+
 
     $errors=[];
     if (!empty($_POST)){
@@ -39,6 +39,8 @@
             exit();
         }
     }
+
+    include 'include/header.php';
 
 ?>
 
