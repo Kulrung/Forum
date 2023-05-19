@@ -59,9 +59,20 @@
                             </div>
                             <div class="col-4">
                                 <p>Počet příspěvků: '.htmlspecialchars($category['comments']).'</p>
-                                <p class="text-muted">Poslední příspěvek: '.htmlspecialchars(date('d.m.Y H:i',strtotime($category['updated']))).'</p>
-                                <a href="category.php" class="btn btn-primary">Upravit</a>
-                                <a href="" class="btn btn-danger">Smazat</a>
+                                <p class="text-muted">Poslední příspěvek: ';
+                                if($category['updated'] != NULL ){
+                                    echo htmlspecialchars(date('d.m.Y H:i',strtotime($category['updated'])));
+                                }
+                                else{
+                                    echo 'Nikdy neaktualizováno.';
+                                }
+                                echo '</p>';
+
+                                if(!empty($_SESSION['isAdmin'])){
+                                    echo '<a href="category.php?id='.$category['categories_id'].'" class="btn btn-primary">Upravit</a>
+                                <a href="categoryRemove.php?id='.$category['categories_id'].'" class="btn btn-danger">Smazat</a>';
+                                }
+                                echo'
                             </div>
                         </div>
                   </div>';
