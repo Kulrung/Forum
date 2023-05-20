@@ -6,8 +6,8 @@
 
     if (!empty($_GET['category'])){
 
-        $query = $db->prepare('SELECT topics.topics_id AS topics_id, topics.name AS topic_name, COUNT(*) AS comments, MAX(comments.updated) AS updated, categories.name AS category_name, categories.categories_id AS categories_id
-                                     FROM categories JOIN topics ON categories.categories_id=topics.categories_id LEFT JOIN comments ON topics.topics_id=comments.topics_id
+        $query = $db->prepare('SELECT topics.topics_id AS topics_id, topics.name AS topic_name, COUNT(*) AS comments, MAX(comments.updated) AS updated, categories.name AS category_name, categories.categories_id AS categories_id, users.users_id AS users_id
+                                     FROM categories JOIN topics ON categories.categories_id=topics.categories_id LEFT JOIN comments ON topics.topics_id=comments.topics_id JOIN users ON comments.creator_id=users.users_id
                                      WHERE topics.categories_id=:categories_id
                                      ORDER BY comments.updated;');
         $query->execute([
@@ -37,10 +37,13 @@
                 }
                 echo '</p>';
 
-                if(!empty($_SESSION['isAdmin'])){
-                    echo '<a href="topic.php?id='.$topic['topics_id'].'" class="btn btn-primary">Upravit</a>
+                if (isset($_SESSION['users_id'])){
+                    if($topic['users_id'] == $_SESSION['users_id'] || $_SESSION['isAdmin']){
+                        echo '<a href="topic.php?id='.$topic['topics_id'].'" class="btn btn-primary">Upravit</a>
                                 <a href="topicRemove.php'.$topic['topics_id'].'" class="btn btn-danger">Smazat</a>';
+                    }
                 }
+
                 echo'
                             </div>
                         </div>
@@ -49,14 +52,14 @@
         }
         else{
             echo '<div class="container p-5 my-5 border border-3">
-                <h2>Nebyly nalezena žádná témata.</h2>
+                <h2>Nebyla nalezena žádná témata.</h2>
               </div>';
         }
 
     }
     else{
         echo '<div class="container p-5 my-5 border border-3">
-                <h2>Takové téma neexistuje.</h2>
+                <h2>Taková kategorie neexistuje.</h2>
               </div>';
     }
 
