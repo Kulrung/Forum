@@ -10,8 +10,12 @@
       <div class="row">
         <div class="col-4">
             <?php
-            if (!empty($_SESSION['users_id'])) {
-                echo '<a href="category.php" class="btn btn-primary">Vytvořit novou kategorii</a>';
+            if (isset($_SESSION['users_id'])){
+                if ($_SESSION['isAdmin']){
+                    {
+                        echo '<a href="category.php" class="btn btn-primary">Vytvořit novou kategorii</a>';
+                    }
+                }
             }
             ?>
         </div>
