@@ -19,18 +19,20 @@
             echo '<div class="container p-3 my-3 border border-3">
                             <div class="row">
                                 <div class="col-8">
-                                    <h2>'.htmlspecialchars($comment['creator']).'</h2>
+                                    <h4>'.htmlspecialchars($comment['creator']).'</h4>
                                     <p>'.htmlspecialchars($comment['text']).'</p>
-                                    <a href="showTopics.php?id='.$comment['categories_id'].'" class="badge bg-primary">'.$comment['category_name'].'</a>
-                                    <a href="showComments.php?id='.$comment['topics_id'].'" class="badge bg-secondary">'.$comment['topic_name'].'</a>
+                                    <a href="showTopics.php?category='.$comment['categories_id'].'" class="badge bg-primary">'.$comment['category_name'].'</a>
+                                    <a href="showComments.php?topic='.$comment['topics_id'].'" class="badge bg-secondary">'.$comment['topic_name'].'</a>
                                 </div>
                                 <div class="col-4">
                                     <p class="text-muted">Aktualizováno: '.htmlspecialchars(date('d.m.Y H:i',strtotime($comment['updated']))).'</p>
                                     <p class="text-muted">Vytvořeno: '.htmlspecialchars(date('d.m.Y H:i',strtotime($comment['created']))).'</p>';
 
-                                    if ($comment['users_id'] == $_SESSION['users_id'] || $_SESSION['isAdmin'] ){
-                                        echo '<a href="comment.php='.$comment['comments_id'].'" class="btn btn-primary">Upravit</a>
-                                    <a href="deleteComment.php?id='.$comment['comments_id'].'" class="btn btn-danger">Smazat</a>';
+                                    if (isset($_SESSION['users_id'])){
+                                        if ($comment['users_id'] == $_SESSION['users_id'] || $_SESSION['isAdmin'] ){
+                                            echo '<a href="comment.php='.$comment['comments_id'].'" class="btn btn-primary">Upravit</a>
+                                                  <a href="deleteComment.php?id='.$comment['comments_id'].'" class="btn btn-danger">Smazat</a>';
+                                        }
                                     }
                             echo '</div>
                             </div>
