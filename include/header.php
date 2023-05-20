@@ -48,7 +48,10 @@
             <ul class="navbar-nav justify-content-right">
                 <?php
                 if (!empty($_SESSION['email'])){
-                    echo '<li class="nav-item">
+                    echo '<li class="navbar-text">
+                            <p class="align-middle my-0" >Přihlášen jako '.$_SESSION['username'].'</p>
+                          </li>
+                          <li class="nav-item">
                             <a href="logout.php" class="nav-link">Odhlásit se</a>
                           </li>';
                 }
