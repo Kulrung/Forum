@@ -56,7 +56,7 @@
                         <div class="row">
                             <div class="col-8">
                                 <h2>
-                                  <a href="topics.php?category='.$category['categories_id'].'">'.htmlspecialchars($category['category_name']).'</a>
+                                  <a href="showTopics.php?category='.$category['categories_id'].'">'.htmlspecialchars($category['category_name']).'</a>
                                 </h2>
                                 <p>'.htmlspecialchars($category['description']).'</p>
                                 
