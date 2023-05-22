@@ -4,12 +4,53 @@
 
     include 'include/header.php';
 
+    ?>
+
+
+    <div class="row">
+        <div class="col-4">
+            <?php
+            if (!empty($_SESSION['users_id'])) {
+                echo '<a href="topic.php?category='.$_GET['category'].'" class="btn btn-primary">Vytvořit nové téma</a>';
+            }
+            ?>
+        </div>
+        <div class="col-4">
+            <!-- <p>Seřadit podle: </p> -->
+        </div>
+        <div class="col-4 mb-3">
+            <p>Seřadit podle: </p>
+            <form method="get" id="sortFilter">
+                <select name="sort" class="form-control" onchange="document.getElementById('sortFilter').submit();">
+                    <option value="sort_by_updated" <?php if (isset($_GET['sort']) && $_GET['sort'] == 'sort_by_updated'){ echo 'selected';} ?> >Poslední změny</option>
+                    <option value="sort_by_comments" <?php if (isset($_GET['sort']) && $_GET['sort'] == 'sort_by_comments'){ echo 'selected';} ?>>Počtu příspěvků</option>
+                </select>
+            </form>
+        </div>
+    </div>
+
+
+    <?php
+
+    $sort = 'updated';
+
+    if (isset($_GET['sort'])){
+        if ($_GET['sort'] == 'sort_by_updated'){
+            $sort = 'updated';
+        }
+        elseif ($_GET['sort'] == 'sort_by_comments'){
+            $sort = 'comments';
+        }
+    }
+
     if (!empty($_GET['category'])){
 
-        $query = $db->prepare('SELECT topics.topics_id AS topics_id, topics.name AS topic_name, COUNT(*) AS comments, MAX(comments.updated) AS updated, categories.name AS category_name, categories.categories_id AS categories_id, users.users_id AS users_id
-                                     FROM categories JOIN topics ON categories.categories_id=topics.categories_id LEFT JOIN comments ON topics.topics_id=comments.topics_id JOIN users ON comments.creator_id=users.users_id
-                                     WHERE topics.categories_id=:categories_id
-                                     ORDER BY comments.updated;');
+
+        $query = $db->prepare('SELECT topics.topics_id AS topics_id,  topics.name AS topic_name, topics.categories_id AS categories_id, categories.name AS category_name, MAX(comments.updated) AS updated, users.users_id AS creator_id, COUNT(comments.comments_id) as comments
+                                     FROM topics JOIN categories ON topics.categories_id=categories.categories_id LEFT JOIN comments ON comments.topics_id=topics.topics_id LEFT JOIN users ON topics.creator_id=users.users_id
+                                     GROUP BY topics.name
+                                     HAVING topics.categories_id=:categories_id
+                                     ORDER BY '.$sort.' DESC ;');
         $query->execute([
             ':categories_id'=>$_GET['category']
         ]);
@@ -18,12 +59,12 @@
 
         if (!empty($topics)){
             foreach ($topics as $topic){
-                echo '<div class="container p-3 my-3 border border-3">
+                echo '<div class="container p-3 border">
                         <div class="row">
                             <div class="col-8">
-                                <h2>
-                                  <a href="showComments.php?topic='.$topic['topics_id'].'">'.htmlspecialchars($topic['topic_name']).'</a>
-                                </h2>
+                                <h3>
+                                  <a class="text-decoration-none" href="showComments.php?topic='.$topic['topics_id'].'">'.htmlspecialchars($topic['topic_name']).'</a>
+                                </h3>
                                 <a href="showTopics.php?category='.$topic['categories_id'].'" class="badge bg-primary">'.$topic['category_name'].'</a>
                             </div>
                             <div class="col-4">
@@ -38,7 +79,7 @@
                 echo '</p>';
 
                 if (isset($_SESSION['users_id'])){
-                    if($topic['users_id'] == $_SESSION['users_id'] || $_SESSION['isAdmin']){
+                    if($topic['creator_id'] == $_SESSION['users_id'] || $_SESSION['isAdmin']){
                         echo '<a href="topic.php?id='.$topic['topics_id'].'" class="btn btn-primary">Upravit</a>
                                 <a href="topicRemove.php'.$topic['topics_id'].'" class="btn btn-danger">Smazat</a>';
                     }
