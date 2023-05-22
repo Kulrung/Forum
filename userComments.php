@@ -13,7 +13,7 @@
         <div class="col-4">
             <!-- <p>Seřadit podle: </p> -->
         </div>
-        <div class="col-4">
+        <div class="col-4 mb-3">
             <p>Seřadit podle: </p>
             <form method="get" id="sortFilter">
                 <select name="sort" class="form-control" onchange="document.getElementById('sortFilter').submit();">
@@ -55,7 +55,7 @@
     if (!empty($comments)){
         foreach ($comments as $comment) {
 
-            echo '<div class="container p-3 my-3 border border-3">
+            echo '<div class="container p-3 border">
                             <div class="row">
                                 <div class="col-8">
                                     <h4>'.htmlspecialchars($comment['username']).'</h4>

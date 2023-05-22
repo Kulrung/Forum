@@ -8,7 +8,7 @@
 
 
       <div class="row">
-        <div class="col-4">
+        <div class="col-4 mb-3">
             <?php
             if (isset($_SESSION['users_id'])){
                 if ($_SESSION['isAdmin']){
