@@ -17,7 +17,7 @@
             <p>Seřadit podle: </p>
             <form method="get" id="sortFilter">
                 <select name="sort" class="form-control" onchange="document.getElementById('sortFilter').submit();">
-                    <option value="sort_by_updated" <?php if (isset($_GET['sort']) && $_GET['sort'] == 'sort_by_updated'){ echo 'selected';} ?> >Poslední změny</option>
+                    <option value="sort_by_updated" <?php if (isset($_GET['sort']) && $_GET['sort'] == 'sort_by_updated'){ echo 'selected';} ?>>Poslední změny</option>
                     <option value="sort_by_created" <?php if (isset($_GET['sort']) && $_GET['sort'] == 'sort_by_created'){ echo 'selected';} ?>>Vytvoření</option>
                 </select>
             </form>
