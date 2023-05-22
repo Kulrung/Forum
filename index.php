@@ -22,7 +22,7 @@
         <div class="col-4">
             <!-- <p>Seřadit podle: </p> -->
         </div>
-        <div class="col-4">
+        <div class="col-4 mb-3" >
             <p>Seřadit podle: </p>
             <form method="get" id="sortFilter">
                 <select name="sort" class="form-control" onchange="document.getElementById('sortFilter').submit();">
@@ -56,11 +56,11 @@
 
     if (!empty($categories)){
         foreach ($categories as $category) {
-            echo '<div class="container p-3 my-3 border border-3">
+            echo '<div class="container p-3 border">
                         <div class="row">
                             <div class="col-8">
                                 <h3>
-                                  <a href="showTopics.php?category='.$category['categories_id'].'">'.htmlspecialchars($category['category_name']).'</a>
+                                  <a class="text-decoration-none" href="showTopics.php?category='.$category['categories_id'].'">'.htmlspecialchars($category['category_name']).'</a>
                                 </h3>
                                 <p>'.htmlspecialchars($category['description']).'</p>
                                 
