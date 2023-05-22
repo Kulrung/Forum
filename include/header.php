@@ -49,7 +49,14 @@
                 <?php
                 if (!empty($_SESSION['email'])){
                     echo '<li class="navbar-text">
-                            <p class="align-middle my-0" >Přihlášen jako '.$_SESSION['username'].'</p>
+                            <p class="align-middle my-0 text-info" >Přihlášen jako '.$_SESSION['username'].'</p>
+                          </li>
+                          <li class="nav-item">
+                            <a href="changeUser.php" class="nav-link ';
+                            if ($page == 'changeUser.php'){
+                                echo 'active';
+                            }
+                            echo' ">Možnosti</a>
                           </li>
                           <li class="nav-item">
                             <a href="logout.php" class="nav-link">Odhlásit se</a>
