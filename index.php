@@ -59,9 +59,9 @@
             echo '<div class="container p-3 my-3 border border-3">
                         <div class="row">
                             <div class="col-8">
-                                <h2>
+                                <h3>
                                   <a href="showTopics.php?category='.$category['categories_id'].'">'.htmlspecialchars($category['category_name']).'</a>
-                                </h2>
+                                </h3>
                                 <p>'.htmlspecialchars($category['description']).'</p>
                                 
                             </div>
@@ -91,5 +91,6 @@
                 <h2>Nebyly nalezeny žádné kategorie.</h2>
               </div>';
     }
+
 
     include 'include/footer.php';
