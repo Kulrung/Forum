@@ -9,6 +9,11 @@ if (empty($_SESSION['users_id'])){
 $topicsId='';
 $topicsName='';
 
+if (!empty($_GET['category'])){
+    $categories_id = $_GET['category'];
+}
+
+
 if (!empty($_REQUEST['id'])){
     $topicsQuery=$db->prepare('SELECT * FROM topics WHERE topics_id=:id LIMIT 1');
     $topicsQuery->execute([
@@ -54,9 +59,11 @@ if (!empty($_POST)){
             ]);
         }
         else{
-            $query=$db->prepare('INSERT INTO topics (name) VALUES (:name);');
+            $query=$db->prepare('INSERT INTO topics (name,categories_id,creator_id) VALUES (:name,:categories_id,:creator_id);');
             $query->execute([
                 ':name'=>$topicsName,
+                ':categories_id'=>$categories_id,
+                ':creator_id'=>$_SESSION['users_id']
             ]);
         }
 
@@ -79,6 +86,7 @@ include 'include/header.php';
     <h2>Téma</h2>
 
     <form method="post">
+        <input type="hidden" name="destination" value="<?php echo $_SERVER['REQUEST_URI'];?>">
         <input type="hidden" name="id" value="<?php echo $topicsId ?>">
         <div class="form-group">
             <label for="name">Název:</label>
@@ -99,7 +107,13 @@ include 'include/header.php';
                     echo 'Přidat';
                 }
                 ?></button>
-            <a href="index.php" class="btn btn-light">Zrušit</a>
+            <a href="<?php if(isset($_REQUEST["destination"])){
+                echo $_REQUEST["destination"];
+            }else if(isset($_SERVER["HTTP_REFERER"])){
+                echo $_SERVER["HTTP_REFERER"];
+            }else{
+                echo 'index.php';
+            }?>" class="btn btn-light">Zrušit</a>
         </div>
 
     </form>
