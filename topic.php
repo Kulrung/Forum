@@ -7,7 +7,7 @@ if (empty($_SESSION['users_id'])){
 }
 
 $topicsId='';
-$name='';
+$topicsName='';
 
 if (!empty($_REQUEST['id'])){
     $topicsQuery=$db->prepare('SELECT * FROM topics WHERE topics_id=:id LIMIT 1');
@@ -16,7 +16,7 @@ if (!empty($_REQUEST['id'])){
     ]);
     if ($topics = $topicsQuery->fetch(PDO::FETCH_ASSOC)) {
         $topicsId=$topics['topics_id'];
-        $name = $topics['name'];
+        $topicsName = $topics['name'];
     }
     else{
         exit('Téma neexistuje.');
@@ -26,9 +26,22 @@ if (!empty($_REQUEST['id'])){
 $errors=[];
 if (!empty($_POST)){
 
-    $name = trim($_POST['name']);
-    if (empty($name)){
+    $topicsName = trim($_POST['name']);
+    if (empty($topicsName)){
         $errors['name']='Musíte zadat téma.';
+    }
+
+    // může se vynechat, dokud není search
+
+    $topicsQuery=$db->prepare('SELECT name FROM topics');
+    $topicsQuery->execute();
+
+    if ($topics = $topicsQuery->fetchAll()){
+        foreach ($topics as $topic){
+            if ($topic['name'] == $topicsName && empty($_GET['id'])){
+                $errors['name']='Toto téma již existuje již existuje.';
+            }
+        }
     }
 
     if (empty($errors)){
@@ -36,14 +49,14 @@ if (!empty($_POST)){
         if ($topicsId){
             $query = $db->prepare('UPDATE topics SET name=:name WHERE topics_id=:id');
             $query->execute([
-                ':name'=>$name,
+                ':name'=>$topicsName,
                 ':id'=>$topicsId
             ]);
         }
         else{
             $query=$db->prepare('INSERT INTO topics (name) VALUES (:name);');
             $query->execute([
-                ':name'=>$name,
+                ':name'=>$topicsName,
             ]);
         }
 
@@ -69,7 +82,7 @@ include 'include/header.php';
         <input type="hidden" name="id" value="<?php echo $topicsId ?>">
         <div class="form-group">
             <label for="name">Název:</label>
-            <input type="text" name="name" id="name" required class="form-control <?php echo (!empty($errors['name'])?'is-invalid':'');?>" value="<?php echo htmlspecialchars($name)?>">
+            <input type="text" name="name" id="name" required class="form-control <?php echo (!empty($errors['name'])?'is-invalid':'');?>" value="<?php echo htmlspecialchars($topicsName)?>">
             <?php
             if (!empty($errors['name'])){
                 echo '<div class="invalid-feedback">'.$errors['name'].'</div>';
