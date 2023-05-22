@@ -1,74 +1,85 @@
 <?php
 
-    require_once 'include/user.php';
+require_once 'include/user.php';
 
-    if (empty($_SESSION['users_id'])){
-        exit('Pro úpravu kategorií musíte být přihlášen(a).');
-    }
+if (empty($_SESSION['users_id'])){
+    exit('Pro úpravu kategorií musíte být přihlášen(a).');
+}
 
-    $categoriesId='';
-    $categoryName='';
-    $categoryDescription='';
+$categoriesId='';
+$categoryName='';
+$categoryDescription='';
 
-    if (!empty($_REQUEST['id'])){
-        $categoriesQuery=$db->prepare('SELECT * FROM categories WHERE categories_id=:id LIMIT 1');
-        $categoriesQuery->execute([
-                ':id'=>$_REQUEST['id']
-        ]);
-        if ($category = $categoriesQuery->fetch(PDO::FETCH_ASSOC)) {
-            $categoriesId=$category['categories_id'];
-            $categoryName = $category['name'];
-            $categoryDescription = $category['description'];
-        }
-        else{
-            exit('Kategorie neexistuje.');
-        }
-    }
-
-    $errors=[];
-    if (!empty($_POST)){
-
-        $description=trim($_POST['description']);
-        if (empty($description)){
-            $errors['description']='Musíte zadat platnou e-mailovou adresu.';
-        }
-
-        $name = trim($_POST['name']);
-        if (empty($name)){
-            $errors['name']='Musíte zadat název kategorie.';
-        }
-
-        if (empty($errors)){
-
-            if ($categoriesId){
-                $query = $db->prepare('UPDATE categories SET name=:name, description=:description WHERE categories_id=:id');
-                $query->execute([
-                    ':name'=>$categoryName,
-                    ':description'=>$categoryDescription,
-                    ':id'=>$categoriesId
-                ]);
-            }
-            else{
-                $query=$db->prepare('INSERT INTO categories (name, description) VALUES (:name, :description);');
-                $query->execute([
-                    ':name'=>$name,
-                    ':description'=>$description
-                ]);
-            }
-
-            header('Location: index.php');
-            exit();
-        }
-    }
-
-    if ($categoriesId){
-        $title = 'Úprava kategorie';
+if (!empty($_REQUEST['id'])){
+    $categoriesQuery=$db->prepare('SELECT * FROM categories WHERE categories_id=:id LIMIT 1');
+    $categoriesQuery->execute([
+        ':id'=>$_REQUEST['id']
+    ]);
+    if ($category = $categoriesQuery->fetch(PDO::FETCH_ASSOC)) {
+        $categoriesId=$category['categories_id'];
+        $categoryName = $category['name'];
+        $categoryDescription = $category['description'];
     }
     else{
-        $title='Nová kategorie';
+        exit('Kategorie neexistuje.');
+    }
+}
+
+$errors=[];
+if (!empty($_POST)){
+
+    $categoryDescription=trim($_POST['description']);
+    if (empty($categoryDescription)){
+        $errors['description']='Musíte zadat platnou e-mailovou adresu.';
     }
 
-    include 'include/header.php';
+    $categoryName = trim($_POST['name']);
+    if (empty($categoryName)){
+        $errors['name']='Musíte zadat název kategorie.';
+    }
+
+    $categoriesQuery=$db->prepare('SELECT name FROM categories');
+    $categoriesQuery->execute();
+
+    if ($categories = $categoriesQuery->fetchAll()){
+        foreach ($categories as $category){
+            if ($category['name'] == $categoryName && empty($_GET['id'])){
+                $errors['name']='Tento název kategorie již existuje.';
+            }
+        }
+    }
+
+    if (empty($errors)){
+
+        if ($categoriesId){
+            $query = $db->prepare('UPDATE categories SET name=:name, description=:description WHERE categories_id=:id');
+            $query->execute([
+                ':name'=>$categoryName,
+                ':description'=>$categoryDescription,
+                ':id'=>$categoriesId
+            ]);
+        }
+        else{
+            $query=$db->prepare('INSERT INTO categories (name, description) VALUES (:name, :description);');
+            $query->execute([
+                ':name'=>$categoryName,
+                ':description'=>$categoryDescription
+            ]);
+        }
+
+        header('Location: index.php');
+        exit();
+    }
+}
+
+if ($categoriesId){
+    $title = 'Úprava kategorie';
+}
+else{
+    $title='Nová kategorie';
+}
+
+include 'include/header.php';
 
 ?>
 
@@ -111,7 +122,7 @@
 
 <?php
 
-    include 'include/footer.php';
+include 'include/footer.php';
 
 
 
