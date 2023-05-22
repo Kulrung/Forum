@@ -11,7 +11,7 @@
         <div class="col-4">
             <?php
             if (!empty($_SESSION['users_id'])) {
-                echo '<a href="topic.php?category='.$_GET['category'].'" class="btn btn-primary">Vytvořit nové téma</a>';
+                echo '<a href="topic.php?" class="btn btn-primary">Vytvořit nové téma</a>';
             }
             ?>
         </div>
