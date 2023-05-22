@@ -4,22 +4,6 @@
 
     include 'include/header.php';
 
-    ?>
-
-    <div class="row">
-        <div class="col-12">
-            <?php
-            if (!empty($_SESSION['users_id'])) {
-                echo '<a href="comment.php" class="btn btn-primary">Vytvořit nový komentář</a>';
-            }
-            ?>
-        </div>
-    </div>
-
-
-
-<?php
-
     function printComments($parent_id, $level): void
     {
 
