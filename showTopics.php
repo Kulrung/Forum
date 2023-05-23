@@ -21,6 +21,7 @@
         <div class="col-4 mb-3">
             <p>Seřadit podle: </p>
             <form method="get" id="sortFilter">
+                <input type="hidden" name="category" value="<?php echo $_GET['category']; ?>">
                 <select name="sort" class="form-control" onchange="document.getElementById('sortFilter').submit();">
                     <option value="sort_by_updated" <?php if (isset($_GET['sort']) && $_GET['sort'] == 'sort_by_updated'){ echo 'selected';} ?> >Poslední změny</option>
                     <option value="sort_by_comments" <?php if (isset($_GET['sort']) && $_GET['sort'] == 'sort_by_comments'){ echo 'selected';} ?>>Počtu příspěvků</option>

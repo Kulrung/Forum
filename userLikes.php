@@ -57,7 +57,9 @@
             echo '<div class="container p-3 border">
                             <div class="row">
                                 <div class="col-8">
-                                    <h4>'.htmlspecialchars($comment['creator']).'</h4>
+                                    <h4>
+                                        <a class="text-decoration-none" href="allComments.php?creator='.$comment['users_id'].'">'.htmlspecialchars($comment['creator']).'</a>
+                                    </h4>
                                     <p>'.htmlspecialchars($comment['text']).'</p>
                                     <a href="showTopics.php?category='.$comment['categories_id'].'" class="badge bg-primary">'.$comment['category_name'].'</a>
                                     <a href="showComments.php?topic='.$comment['topics_id'].'" class="badge bg-secondary">'.$comment['topic_name'].'</a>
