@@ -3,6 +3,7 @@
     require_once 'include/user.php';
 
     include 'include/header.php';
+    include 'include/functions.php';
 
 ?>
 
@@ -63,7 +64,31 @@
                                     </h4>
                                     <p>'.htmlspecialchars($comment['text']).'</p>
                                     <a href="showTopics.php?category='.$comment['categories_id'].'" class="badge bg-primary">'.$comment['category_name'].'</a>
-                                    <a href="showComments.php?topic='.$comment['topics_id'].'" class="badge bg-secondary">'.$comment['topic_name'].'</a>
+                                    <a href="showComments.php?topic='.$comment['topics_id'].'" class="badge bg-secondary">'.$comment['topic_name'].'</a>';
+            ?>
+
+                                    <span>
+                                        <i <?php
+                                        if(userLikesDislikes($comment['comments_id'],$comment['users_id'],1,$db)): ?>
+                                            class="fa fa-thumbs-up like-btn"
+                                        <?php else: ?>
+                                            class="fa fa-thumbs-o-up like-btn"
+                                        <?php endif ?>
+                                            data-id="<?php echo $comment['comments_id'] ?>">
+                                        </i>
+                                        <span class="likes"><?php echo getLikesDislikes($comment['comments_id'],1,$db); ?></span>
+
+                                        <i <?php if (userLikesDislikes($comment['comments_id'],$comment['users_id'],2,$db)): ?>
+                                            class="fa fa-thumbs-down dislike-btn"
+                                        <?php else: ?>
+                                            class="fa fa-thumbs-o-down dislike-btn"
+                                        <?php endif ?>
+                                          data-id="<?php echo $comment['comments_id'] ?>">
+                                        </i>
+                                        <span class="dislikes"><?php echo getLikesDislikes($comment['comments_id'],2,$db); ?></span>
+                                    </span>
+
+            <?php echo' 
                                 </div>
                                 <div class="col-4">
                                     <p class="text-muted">Aktualizováno: '.htmlspecialchars(date('d.m.Y H:i',strtotime($comment['updated']))).'</p>
