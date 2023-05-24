@@ -25,19 +25,30 @@
         }
 
         if (empty($_POST['password']) && empty($_POST['password2']) && empty($_POST['password3'])){
-            if (empty($errors)){
-                $query=$db->prepare('UPDATE users SET username=:username, email=:email WHERE users_id=:users_id');
-                $query->execute([
+
+            $query=$db->prepare('SELECT * FROM users WHERE email=:email LIMIT 1');
+            $query->execute([
+                ':email'=>$_POST['email']
+            ]);
+
+            if ($query->fetch()>0){
+                $errors['email']='Zvolená emailová adresa již existuje.';
+            }
+            else{
+                if (empty($errors)){
+                    $query=$db->prepare('UPDATE users SET username=:username, email=:email WHERE users_id=:users_id');
+                    $query->execute([
                         ':users_id'=>$_SESSION['users_id'],
                         ':username'=>$_POST['username'],
                         ':email'=>$_POST['email']
-                ]);
+                    ]);
 
-                $_SESSION['username'] = $_POST['username'];
-                $_SESSION['email'] = $_POST['email'];
+                    $_SESSION['username'] = $_POST['username'];
+                    $_SESSION['email'] = $_POST['email'];
 
-                Header('Location: index.php');
-                exit();
+                    Header('Location: index.php');
+                    exit();
+                }
             }
         }
         else{
