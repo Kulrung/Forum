@@ -107,13 +107,7 @@ include 'include/header.php';
                     echo 'Přidat';
                 }
                 ?></button>
-            <a href="<?php if(isset($_REQUEST["destination"])){
-                echo $_REQUEST["destination"];
-            }else if(isset($_SERVER["HTTP_REFERER"])){
-                echo $_SERVER["HTTP_REFERER"];
-            }else{
-                echo 'index.php';
-            }?>" class="btn btn-light">Zrušit</a>
+            <a href="index.php" class="btn btn-light">Zrušit</a>
         </div>
 
     </form>
