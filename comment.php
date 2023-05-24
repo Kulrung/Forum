@@ -3,7 +3,7 @@
 require_once 'include/user.php';
 
     if (empty($_SESSION['users_id'])){
-        exit('Pro úpravu kategorií musíte být přihlášen(a).');
+        exit('Pro komentování musíte být přihlášen(a).');
     }
 
     $commentsId='';
@@ -59,7 +59,12 @@ require_once 'include/user.php';
                 ]);
             }
             else{
-                exit('Tady byste být neměli.');
+                $query=$db->prepare('INSERT INTO comments (text,topics_id,creator_id) VALUES (:text,:topics_id,:creator_id);');
+                $query->execute([
+                    ':text'=>$commentsText,
+                    ':topics_id'=>$topicsId,
+                    ':creator_id'=>$_SESSION['users_id']
+                ]);
             }
 
             header('Location: index.php');
