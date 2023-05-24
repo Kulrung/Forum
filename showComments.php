@@ -43,6 +43,33 @@
         $indent =  ($level * 50);
 
         foreach ($comments as $comment) {
+
+            $likeQuery = $db->prepare('SELECT COUNT(*) AS likes 
+                                             FROM comments JOIN likes ON comments.comments_id=likes.comments_id
+                                             WHERE comments.comments_id=:comments_id AND likes.like_dislike=1 LIMIT 1
+                                            ');
+
+            $likeQuery->execute([
+                ':comments_id'=>$comment['comments_id']
+            ]);
+
+            $data = $likeQuery->fetch(PDO::FETCH_ASSOC);
+
+            $likes = $data['likes'];
+
+            $dislikeQuery = $db->prepare('SELECT COUNT(*) AS dislikes 
+                                             FROM comments JOIN likes ON comments.comments_id=likes.comments_id
+                                             WHERE comments.comments_id=:comments_id AND likes.like_dislike=2 LIMIT 1
+                                            ');
+
+            $dislikeQuery->execute([
+                ':comments_id'=>$comment['comments_id']
+            ]);
+
+            $data = $dislikeQuery->fetch(PDO::FETCH_ASSOC);
+
+            $dislikes = $data['dislikes'];
+
             echo '<div class="p-3 border" style="margin-left: '.$indent.'px">
                         <div class="row">
                             <div class="col-8">
@@ -74,9 +101,11 @@
                                 <p class="text-muted">Vytvořeno: '.htmlspecialchars(date('d.m.Y H:i',strtotime($comment['created']))).'</p>';
 
             if (isset($_SESSION['users_id'])){
+                if ($comment['creator_id'] == $_SESSION['users_id']){
+                    echo '<a href="comment.php?id='.$comment['comments_id'].'" class="btn btn-primary mr-2">Upravit</a> ';
+                }
                 if ($comment['creator_id'] == $_SESSION['users_id'] || $_SESSION['isAdmin']){
-                    echo '<a href="comment.php?id='.$comment['comments_id'].'" class="btn btn-primary">Upravit</a>
-                      <a href="topicRemove.php'.$comment['comments_id'].'" class="btn btn-danger">Smazat</a>';
+                    echo '<a href="commentRemove.php?id='.$comment['comments_id'].'" class="btn btn-danger">Smazat</a>';
                 }
             }
             echo'
@@ -88,7 +117,6 @@
             printComments($comment['comments_id'],$level);
         }
     }
-
 
     if (!empty($_GET['topic'])){
         printComments(null, 0);

@@ -70,9 +70,9 @@
                                     <p class="text-muted">Vytvořeno: '.htmlspecialchars(date('d.m.Y H:i',strtotime($comment['created']))).'</p>';
 
                                     if (isset($_SESSION['users_id'])){
-                                        if ($comment['users_id'] == $_SESSION['users_id'] || $_SESSION['isAdmin'] ){
+                                        if ($comment['users_id'] == $_SESSION['users_id']){
                                             echo '<a href="comment.php?id='.$comment['comments_id'].'" class="btn btn-primary">Upravit</a>
-                                    <a href="deleteComment.php?id='.$comment['comments_id'].'" class="btn btn-danger">Smazat</a>';
+                                                  <a href="deleteComment.php?id='.$comment['comments_id'].'" class="btn btn-danger">Smazat</a>';
                                         }
                                     }
                             echo '</div>
