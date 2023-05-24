@@ -86,7 +86,7 @@
         </div>
         <div class="form-group">
             <label for="password2">Potvrzení hesla:</label>
-            <input type="password" name="passowrd2" id="password2" required class="form-control <?php echo (!empty($errors['password2'])?'is-invalid':'');?>">
+            <input type="password" name="password2" id="password2" required class="form-control <?php echo (!empty($errors['password2'])?'is-invalid':'');?>">
             <?php
 
             echo (!empty($errors['password2'])? '<div class="invalid-feedback">'.$errors['password2'].'</div>':'');
