@@ -69,7 +69,7 @@
 
                                     <span>
                                         <i <?php
-                                        if(userLikesDislikes($comment['comments_id'],$comment['users_id'],1,$db)): ?>
+                                        if(userLikesDislikes($comment['comments_id'],$_SESSION['users_id'],1,$db)): ?>
                                             class="fa fa-thumbs-up like-btn"
                                         <?php else: ?>
                                             class="fa fa-thumbs-o-up like-btn"
@@ -78,7 +78,7 @@
                                         </i>
                                         <span class="likes"><?php echo getLikesDislikes($comment['comments_id'],1,$db); ?></span>
 
-                                        <i <?php if (userLikesDislikes($comment['comments_id'],$comment['users_id'],2,$db)): ?>
+                                        <i <?php if (userLikesDislikes($comment['comments_id'],$_SESSION['users_id'],2,$db)): ?>
                                             class="fa fa-thumbs-down dislike-btn"
                                         <?php else: ?>
                                             class="fa fa-thumbs-o-down dislike-btn"
