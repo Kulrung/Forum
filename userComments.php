@@ -5,6 +5,9 @@
     include 'include/header.php';
     include 'include/functions.php';
 
+
+    $title = 'Moje příspěvky.';
+
     if(!isset($_SESSION['users_id'])){
         header('Location: index.php');
     }

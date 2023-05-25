@@ -66,7 +66,7 @@
                                 <h3>
                                   <a class="text-decoration-none" href="showComments.php?topic='.$topic['topics_id'].'">'.htmlspecialchars($topic['topic_name']).'</a>
                                 </h3>
-                                <a href="showTopics.php?category='.$topic['categories_id'].'" class="badge bg-primary">'.$topic['category_name'].'</a>
+                                <a href="showTopics.php?category='.$topic['categories_id'].'" class="badge bg-primary">'.htmlspecialchars($topic['category_name']).'</a>
                             </div>
                             <div class="col-4">
                                 <p>Počet příspěvků: '.htmlspecialchars($topic['comments']).'</p>
