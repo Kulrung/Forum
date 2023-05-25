@@ -5,6 +5,10 @@
     include 'include/header.php';
     include 'include/functions.php';
 
+    if(!isset($_SESSION['users_id'])){
+        header('Location: index.php');
+    }
+
 ?>
 
     <div class="row">
