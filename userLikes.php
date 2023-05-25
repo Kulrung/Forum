@@ -42,7 +42,7 @@
     if (!empty($_SESSION['users_id'])){
         $query = $db->prepare('SELECT categories.categories_id AS categories_id, topics.topics_id AS topics_id, creator.users_id AS users_id, creator.username AS creator, comments.comments_id, comments.text AS text, topics.name AS topic_name, categories.name AS category_name, users.username AS username, comments.created AS created, comments.updated AS updated, comments.created AS created
                                     FROM users JOIN likes ON users.users_id=likes.users_id JOIN comments ON likes.comments_id=comments.comments_id JOIN users AS creator ON creator.users_id=comments.creator_id JOIN topics ON topics.topics_id=comments.topics_id JOIN categories ON categories.categories_id=topics.categories_id
-                                    WHERE users.users_id=:users_id
+                                    WHERE users.users_id=:users_id AND likes.like_dislike=1
                                     ORDER BY '.$sort.' DESC;');
         $query->execute([
             ':users_id'=> $_SESSION['users_id']
@@ -68,7 +68,8 @@
 
                                     <span>
                                         <i <?php
-                                        if(userLikesDislikes($comment['comments_id'],$comment['users_id'],1,$db)): ?>
+
+                                        if(userLikesDislikes($comment['comments_id'],$_SESSION['users_id'],1,$db)): ?>
                                             class="fa fa-thumbs-up like-btn"
                                         <?php else: ?>
                                             class="fa fa-thumbs-o-up like-btn"
@@ -77,7 +78,7 @@
                                         </i>
                                         <span class="likes"><?php echo getLikesDislikes($comment['comments_id'],1,$db); ?></span>
 
-                                        <i <?php if (userLikesDislikes($comment['comments_id'],$comment['users_id'],2,$db)): ?>
+                                        <i <?php if (userLikesDislikes($comment['comments_id'],$_SESSION['users_id'],2,$db)): ?>
                                             class="fa fa-thumbs-down dislike-btn"
                                         <?php else: ?>
                                             class="fa fa-thumbs-o-down dislike-btn"

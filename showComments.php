@@ -5,10 +5,16 @@
     include 'include/header.php';
     include 'include/functions.php';
 
+
     function printComments($parent_id, $level): void
     {
 
         global $db;
+
+        if (!isset($_SESSION[''])){
+            $_SESSION['users_id'] = null;
+        }
+
 
         if ($parent_id == null){
             $query = $db->prepare('SELECT comments.comments_id AS comments_id, comments.parent_id AS parent_id, topics.name AS topic_name, users.username AS creator, comments.text AS text, topics.categories_id AS categories_id, categories.name AS category_name, topics.topics_id AS topics_id, comments.updated AS updated, comments.created AS created, comments.comments_id AS comments_id, users.users_id AS creator_id
@@ -69,7 +75,7 @@
 ?>
                                 <span>
                                     <i <?php
-                                    if(userLikesDislikes($comment['comments_id'],$comment['creator_id'],1,$db)): ?>
+                                    if(userLikesDislikes($comment['comments_id'],$_SESSION['users_id'],1,$db)): ?>
                                         class="fa fa-thumbs-up like-btn"
                                     <?php else: ?>
                                         class="fa fa-thumbs-o-up like-btn"
@@ -78,7 +84,7 @@
                                     </i>
                                     <span class="likes"><?php echo getLikesDislikes($comment['comments_id'],1,$db); ?></span>
 
-                                    <i <?php if (userLikesDislikes($comment['comments_id'],$comment['creator_id'],2,$db)): ?>
+                                    <i <?php if (userLikesDislikes($comment['comments_id'],$_SESSION['users_id'],2,$db)): ?>
                                           class="fa fa-thumbs-down dislike-btn"
                                       <?php else: ?>
                                           class="fa fa-thumbs-o-down dislike-btn"
