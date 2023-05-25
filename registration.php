@@ -2,6 +2,8 @@
 
     require_once 'include/user.php';
 
+    $title = 'Registrace.';
+
     if (!empty($_SESSION['users_id'])){
         header('Location: index.php');
         exit();

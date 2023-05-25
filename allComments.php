@@ -4,6 +4,10 @@ require_once 'include/user.php';
 
 include 'include/header.php';
 
+if (!empty($_GET['creator'])){
+    $title = 'Příspěvky uživatele '.$_GET['creator'];
+}
+
 ?>
 
     <div class="row">
