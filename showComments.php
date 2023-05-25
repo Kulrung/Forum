@@ -4,14 +4,12 @@
 
     include 'include/header.php';
     include 'include/functions.php';
-
-
     function printComments($parent_id, $level): void
     {
 
         global $db;
 
-        if (!isset($_SESSION[''])){
+        if (!isset($_SESSION['users_id'])){
             $_SESSION['users_id'] = null;
         }
 
