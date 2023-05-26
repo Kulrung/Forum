@@ -47,7 +47,6 @@ function delete_vote($creatorId,$commentsId,$db){
 }
 function getRating($commentsId,$db)
 {
-    $rating = array();
     $likes=getLikesDislikes($commentsId,1,$db);
     $dislikes=getLikesDislikes($commentsId,2,$db);
     $rating = [

@@ -32,7 +32,7 @@ if(isset($_SESSION['users_id'])){
     }
 }
 else{
-    exit('Pro likování a dislikování musíte být přihlášeni');
+    header('Location: index.php');
 }
 
 
